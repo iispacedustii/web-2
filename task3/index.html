@@ -1,1 +1,38 @@
-
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание 8</title>
+    <link rel="stylesheet" href="../styles/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/slapform@latest/dist/index.min.js"></script>
+  </head>
+  
+  <body>
+    <button id="button">Открыть форму</button>
+    <div id="popup">
+      <form id="form">
+        <label>ФИО:</label>
+        <input type="text" id="name" class="input" required>
+        <br>
+        <label>Почта:</label>
+        <input type="email" id="email" class="input"> 
+        <br>
+        <label>Телефон:</label>
+        <input type="tel" id="number" class="input">
+        <br>
+        <label>Организация:</label>
+        <input type="text" id="organization" class="input">
+        <br>
+        <label>Сообщение:</label>
+        <textarea id="message" class="input"></textarea>
+        <br>
+        <label>Согласен с политикой обработки персональных данных</label>
+        <input type="checkbox" id="checkbox" required>
+        <br>
+        <button id="submit" type="submit">Отправить</button>
+      </form>
+    </div>
+    <script src="../js/script.js"></script>
+  </body>
+</html>
