@@ -8,39 +8,39 @@
   </head>
   
   <body>
-    <form action="index.php" method="POST" class="form" id="form">
+    <form action="index.php" method="POST">
 
       Фамилия, Имя, Отчество:<br />
       <label>
-        <input name="name_field" placeholder="Введите ФИО" />
+        <input name="name" placeholder="Введите ФИО" />
       </label><br />
 
       Номер телефона:<br />
       <label>
-        <input name="tel_field" type="tel"/> placeholder="+7900 000 00 00" />
+        <input name="phone" type="tel"/> placeholder="+7900 000 00 00" />
       </label><br />
 
       Адрес электронной почты:<br />
       <label>
-        <input name="email_field" type="email" placeholder="Введите вашу почту" />
+        <input name="email" type="email" placeholder="Введите вашу почту" />
       </label><br />
       
       Дата рождения:<br />
       <label>
-        <input name="date_field" value="1970-01-01" type="date" />
+        <input name="date" type="date" value="1970-01-01" />
       </label><br />
 
       Пол:<br />
       <label>
-        <input type="radio" name="sex" value="male" />
+        <input name="sex" type="radio" value="male" />
       М</label>
       <label>
-        <input type="radio" name="sex" value="female" />
+        <input name="sex" type="radio" value="female" />
       Ж</label><br />
 
       <label>
         Любимый язык программирования:<br/>
-        <select name="lang_field" multiple="multiple">
+        <select name="lang" multiple="multiple">
           <option value="listboxVal1">Pascal</option>
           <option value="listboxVal2">C</option>
           <option value="listboxVal3">C++</option>
@@ -57,12 +57,11 @@
 
       <label>
         Биография:<br />
-        <textarea name="biography_field"> </textarea>
+        <textarea name="bio"> </textarea>
       </label><br />
 
       <label>
-        <input type="checkbox"
-        name="check"/>
+        <input name="check" type="checkbox"/>
         С контрактом ознакомлен(а)</label><br/>
 
       <input type="submit" value="Сохранить"/>
