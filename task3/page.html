@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Задание 3</title>
   </head>
   
@@ -16,33 +17,25 @@
 
       Номер телефона:<br />
       <label>
-        <input name="tel_field" type="tel"/>
+        <input name="tel_field" type="tel"/> placeholder="+7900 000 00 00" />
       </label><br />
 
       Адрес электронной почты:<br />
       <label>
-        <input name="email_field"
-        type="email"
-        placeholder="Введите вашу почту" />
+        <input name="email_field" type="email" placeholder="Введите вашу почту" />
       </label><br />
       
       Дата рождения:<br />
       <label>
-        <input name="date_field"
-        value="1970-01-01"
-        type="date" />
+        <input name="date_field" value="1970-01-01" type="date" />
       </label><br />
 
       Пол:<br />
       <label>
-        <input type="radio"  
-        name="sex_group" 
-        value="0" />
+        <input type="radio" name="sex" value="male" />
       М</label>
       <label>
-        <input type="radio"
-        name="sex_group" 
-        value="1" />
+        <input type="radio" name="sex" value="female" />
       Ж</label><br />
 
       <label>
@@ -74,6 +67,6 @@
 
       <input type="submit" value="Сохранить"/>
     </form>
-    <script src="../js/script.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
