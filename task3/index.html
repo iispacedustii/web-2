@@ -3,36 +3,77 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Задание 8</title>
-    <link rel="stylesheet" href="../styles/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/slapform@latest/dist/index.min.js"></script>
+    <title>Задание 3</title>
   </head>
   
   <body>
-    <button id="button">Открыть форму</button>
-    <div id="popup">
-      <form id="form">
-        <label>ФИО:</label>
-        <input type="text" id="name" class="input" required>
-        <br>
-        <label>Почта:</label>
-        <input type="email" id="email" class="input"> 
-        <br>
-        <label>Телефон:</label>
-        <input type="tel" id="number" class="input">
-        <br>
-        <label>Организация:</label>
-        <input type="text" id="organization" class="input">
-        <br>
-        <label>Сообщение:</label>
-        <textarea id="message" class="input"></textarea>
-        <br>
-        <label>Согласен с политикой обработки персональных данных</label>
-        <input type="checkbox" id="checkbox" required>
-        <br>
-        <button id="submit" type="submit">Отправить</button>
-      </form>
-    </div>
+    <form action="index.php" method="POST" class="form" id="form">
+
+      Фамилия, Имя, Отчество:<br />
+      <label>
+        <input name="name_field" placeholder="Введите ФИО" />
+      </label><br />
+
+      Номер телефона:<br />
+      <label>
+        <input name="tel_field" type="tel"/>
+      </label><br />
+
+      Адрес электронной почты:<br />
+      <label>
+        <input name="email_field"
+        type="email"
+        placeholder="Введите вашу почту" />
+      </label><br />
+      
+      Дата рождения:<br />
+      <label>
+        <input name="date_field"
+        value="1970-01-01"
+        type="date" />
+      </label><br />
+
+      Пол:<br />
+      <label>
+        <input type="radio"  
+        name="sex_group" 
+        value="0" />
+      М</label>
+      <label>
+        <input type="radio"
+        name="sex_group" 
+        value="1" />
+      Ж</label><br />
+
+      <label>
+        Любимый язык программирования:<br/>
+        <select name="lang_field" multiple="multiple">
+          <option value="listboxVal1">Pascal</option>
+          <option value="listboxVal2">C</option>
+          <option value="listboxVal3">C++</option>
+          <option value="listboxVal4">JavaScript</option>
+          <option value="listboxVal5">PHP</option>
+          <option value="listboxVal6">Python</option>
+          <option value="listboxVal7">Java</option>
+          <option value="listboxVal8">Haskel</option>
+          <option value="listboxVal9">Clojure</option>
+          <option value="listboxVal10">Prolog</option>
+          <option value="listboxVal11">Scala</option>
+        </select>
+      </label><br />
+
+      <label>
+        Биография:<br />
+        <textarea name="biography_field"> </textarea>
+      </label><br />
+
+      <label>
+        <input type="checkbox"
+        name="check"/>
+        С контрактом ознакомлен(а)</label><br/>
+
+      <input type="submit" value="Сохранить"/>
+    </form>
     <script src="../js/script.js"></script>
   </body>
 </html>
