@@ -103,11 +103,12 @@ try {
   $form_id = $db->lastInsertId();
   
   foreach ($_POST['langs'] as $option) {
-    $stmt = $db->prepare("INSERT INTO pl VALUES (langs)");
+    $stmt = $db->prepare("INSERT INTO lang_list VALUES (langs)");
     $stmt->execute([$option]);
-    $pl_id = $db->lastInsertId();
-    $stmt = $db->prepare("INSERT INTO form_pl VALUES (form_id, pl_id)");
-    $stmt->execute([$form_id, $pl_id]);
+    $lang_list_id = $db->lastInsertId();
+    
+    $stmt = $db->prepare("INSERT INTO lang_form VALUES (form_id, pl_id)");
+    $stmt->execute([$form_id, $lang_list_id]);
   }
 }
 catch(PDOException $e){
