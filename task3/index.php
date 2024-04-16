@@ -90,7 +90,7 @@ $db = new PDO('mysql:host=localhost;dbname=u67354', $user, $pass,
 
 // Подготовленный запрос. Не именованные метки.
 try {
-  $stmt = $db->prepare("INSERT INTO form (text, tel, email, date, radio1, biog, check1) VALUES (?, ?, ?, ?, ?, ?, ?)");
+  $stmt = $db->prepare("INSERT INTO form VALUES (name, tel, email, date, sex, bio, checkmark)");
   $stmt->execute([
   $_POST['name'],
   $_POST['phone'],
@@ -98,18 +98,17 @@ try {
   $_POST['date'],
   $_POST['sex'],
   $_POST['bio'],
-  $_POST['check1']
+  $_POST['checkmark']
   ]);
   $form_id = $db->lastInsertId();
-  foreach ($_POST['name'] as $language) {
+  
+  foreach ($_POST['name'] as $langs) {
   $stmt = $db->prepare("INSERT INTO pl (name) VALUES (?)");
   $stmt->execute([$language]);
-
   $pl_id = $db->lastInsertId();
 
   $stmt = $db->prepare("INSERT INTO form_pl (form_id, pl_id) VALUES (?, ?)");
   $stmt->execute([$form_id, $pl_id]);
-  }
 }
 catch(PDOException $e){
   print('Error : ' . $e->getMessage());
