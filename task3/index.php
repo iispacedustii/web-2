@@ -22,39 +22,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 $errors = FALSE;
 
 
-if (empty($_POST['name_field']) || !preg_match('/^[a-zA-Z\s]{1,150}$/', $_POST['name_field'])) {
-  print('Заполните имя.<br/>');
+if (empty($_POST['name']) || !preg_match('/^[a-zA-Z\s]{1,150}$/', $_POST['name_field'])) {
+  print('ФИО не указано!<br/>');
   $errors = TRUE;
 }
 
-if (empty($_POST['tel_field']) || !is_numeric($_POST['tel_field']) || !preg_match('/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $_POST['tel_field'])) {
-  print('Заполните телефон.<br/>');
+if (empty($_POST['phone']) || !is_numeric($_POST['tel_field']) || !preg_match('/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $_POST['tel_field'])) {
+  print('Номер телефона не указан!<br/>');
   $errors = TRUE;
 }
 
-if (empty($_POST['email_field']) || !preg_match('/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i', $_POST['email_field']) ) {
-  print('Заполните почту.<br/>');
+if (empty($_POST['email']) || !preg_match('/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i', $_POST['email_field']) ) {
+  print('Почта не указана!<br/>');
   $errors = TRUE;
 }
 
-if (empty($_POST['date_field']) || !preg_match('/^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/', $_POST['date_field']) ) {
-  print('Заполните дату.<br/>');
+if (empty($_POST['date']) || !preg_match('/^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/', $_POST['date_field']) ) {
+  print('Дата рождения не указана!<br/>');
   $errors = TRUE;
 }
 if (!isset($_POST['sex']) || !in_array($_POST['sex'], array('male', 'female'))) {
-  print('Выберете пол.<br/>');
+  print('Пол не указан!<br/>');
   $errors = TRUE;
 }
 
-$languages = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11");
-if (!isset($_POST['name'])) {
-  print('Выберете языки.<br/>');
+$langs = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11");
+if (!isset($_POST['langs'])) {
+  print('Языки программирования не выбраны!<br/>');
   $errors = TRUE;
 }
 else {
-  foreach ($_POST['name'] as $option) {
-    if ( !in_array($option, $languages)) {
-      print('Выберете языки.<br/>');
+  foreach ($_POST['langs'] as $option) {
+    if ( !in_array($option, $langs)) {
+      print('Языка нет в списке!<br/>');
       $errors = TRUE;
       break;
     }
@@ -92,23 +92,23 @@ $db = new PDO('mysql:host=localhost;dbname=u67354', $user, $pass,
 try {
   $stmt = $db->prepare("INSERT INTO form VALUES (name, tel, email, date, sex, bio, checkmark)");
   $stmt->execute([
-  $_POST['name'],
-  $_POST['phone'],
-  $_POST['email'],
-  $_POST['date'],
-  $_POST['sex'],
-  $_POST['bio'],
-  $_POST['checkmark']
+    $_POST['name'],
+    $_POST['phone'],
+    $_POST['email'],
+    $_POST['date'],
+    $_POST['sex'],
+    $_POST['bio'],
+    $_POST['checkmark']
   ]);
   $form_id = $db->lastInsertId();
   
-  foreach ($_POST['name'] as $langs) {
-  $stmt = $db->prepare("INSERT INTO pl (name) VALUES (?)");
-  $stmt->execute([$language]);
-  $pl_id = $db->lastInsertId();
-
-  $stmt = $db->prepare("INSERT INTO form_pl (form_id, pl_id) VALUES (?, ?)");
-  $stmt->execute([$form_id, $pl_id]);
+  foreach ($_POST['langs'] as $option) {
+    $stmt = $db->prepare("INSERT INTO pl VALUES (langs)");
+    $stmt->execute([$option]);
+    $pl_id = $db->lastInsertId();
+    $stmt = $db->prepare("INSERT INTO form_pl VALUES (form_id, pl_id)");
+    $stmt->execute([$form_id, $pl_id]);
+  }
 }
 catch(PDOException $e){
   print('Error : ' . $e->getMessage());
