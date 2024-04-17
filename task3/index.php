@@ -51,15 +51,6 @@ if (!isset($_POST['langs'])) {
   print('Языки программирования не выбраны!<br/>');
   $errors = TRUE;
 }
-else {
-  foreach ($_POST['langs'] as $option) {
-    if ( !in_array($option, $langs)) {
-      print('Языка нет в списке!<br/>');
-      $errors = TRUE;
-      break;
-    }
-  }
-}
 
 if (empty($_POST['biog']) ) {
   print('Заполните биографию.<br/>');
@@ -70,11 +61,6 @@ if(!isset($_POST['check1']) || $_POST['check1'] != 'on') {
   print('Отметьте чекбокс.<br/>');
   $errors = TRUE;
 }
-  
-
-// *************
-// Тут необходимо проверить правильность заполнения всех остальных полей.
-// *************
 
 if ($errors) {
   // При наличии ошибок завершаем работу скрипта.
@@ -90,26 +76,18 @@ $db = new PDO('mysql:host=localhost;dbname=u67354', $user, $pass,
 
 // Подготовленный запрос. Не именованные метки.
 try {
-  $stmt = $db->prepare("INSERT INTO form VALUES (name, tel, email, date, sex, bio, checkmark)");
-  $stmt->execute([
-    $_POST['name'],
-    $_POST['phone'],
-    $_POST['email'],
-    $_POST['date'],
-    $_POST['sex'],
-    $_POST['bio'],
-    $_POST['checkmark']
-  ]);
+  $stmt = $db->prepare("INSERT INTO form VALUES (name, phone, email, date, sex, bio, checkmark)");
+  $stmt->execute([  $_POST['name'], $_POST['phone'], $_POST['email'], $_POST['date'], $_POST['sex'], $_POST['bio'], $_POST['checkmark'] ]);
   $form_id = $db->lastInsertId();
   
-  foreach ($_POST['langs'] as $option) {
-    $stmt = $db->prepare("INSERT INTO lang_list VALUES (langs)");
-    $stmt->execute([$option]);
+  foreach ($_POST['langs']) {
+    $stmt = $db->prepare("INSERT INTO lang_table VALUES (langs)");
+    $stmt->execute([ $_POST['langs'] ]);
     $lang_list_id = $db->lastInsertId();
-    
-    $stmt = $db->prepare("INSERT INTO lang_form VALUES (form_id, pl_id)");
-    $stmt->execute([$form_id, $lang_list_id]);
   }
+    
+    //$stmt = $db->prepare("INSERT INTO link VALUES (form_id, pl_id)");
+    //$stmt->execute([$form_id, $lang_list_id]); 
 }
 catch(PDOException $e){
   print('Error : ' . $e->getMessage());
