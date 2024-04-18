@@ -6,23 +6,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   if (!empty($_GET['save'])) {
     print('Результаты сохранены.');
   }
-  // Включаем содержимое файла form.php.
+
   include('form.html');
-  // Завершаем работу скрипта.
   exit();
 }
-// Иначе, если запрос был методом POST, т.е. нужно проверить данные и сохранить их в XML-файл.
 
 // Проверяем ошибки.
 $errors = FALSE;
 
 
-if ( empty($_POST['name']) ) {
+if ( empty($_POST['name']) || !preg_match('/([A-Za-zА-Яа-я-]+\s[A-Za-zА-Яа-я-]+\s[A-Za-zА-Яа-я-]+)/', $_POST['name'])) {
   print('ФИО не указаны!<br/>');
   $errors = TRUE;
 }
 
-if ( empty($_POST['phone']) ) {
+if ( empty($_POST['phone']) || !is_numeric($_POST['phone'])) {
   print('Номер телефона не указан!<br/>');
   $errors = TRUE;
 }
@@ -36,12 +34,12 @@ if ( empty($_POST['date']) ) {
   print('Дата рождения не указана!<br/>');
   $errors = TRUE;
 }
-if ( !isset($_POST['sex']) ) {
+if ( !isset($_POST['sex']) || !in_array($_POST['sex'], array('male', 'female')) ) {
   print('Пол не указан!<br/>');
   $errors = TRUE;
 }
 
-if ( !isset($_POST['langs']) ) {
+if ( empty($_POST['langs']) ) {
   print('Языки программирования не выбраны!<br/>');
   $errors = TRUE;
 }
@@ -57,7 +55,6 @@ if(!isset($_POST['checkmark']) || $_POST['checkmark'] != 'on') {
 }
 
 if ($errors) {
-  // При наличии ошибок завершаем работу скрипта.
   exit();
 }
 
@@ -65,17 +62,17 @@ if ($errors) {
 
 $user = 'u67354';
 $pass = '3075308';
-$db = new PDO('mysql:host=localhost;dbname=u67354', $user, $pass, [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
+$db = new PDO('mysql:host=localhost;dbname=u67354', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
 // Подготовленный запрос. Не именованные метки.
 try {
-    $stmt = $db->prepare("INSERT INTO form SET name = ?, phone = ?, email = ?, date = ?, sex = ?, bio = ?");
+    $stmt = $db->prepare('INSERT INTO form SET name = ?, phone = ?, email = ?, date = ?, sex = ?, bio = ?');
     $stmt -> execute(array( $_POST['name'], $_POST['phone'], $_POST['email'], $_POST['date'], $_POST['sex'], $_POST['bio'] ));
   
-    $application_id = $db->lastInsertId();
+    $id = $db->lastInsertId();
     
-    foreach ($_POST['langs'] as $language) {
-      $stmt = $db->prepare("INSERT INTO lang_table (id, language) VALUES (?, ?)");
-      $stmt->execute([$id, $language]);
+    foreach ($_POST['langs'] as $lang) {
+      $stmt = $db->prepare('INSERT INTO lang_table (id, lang) VALUES (?, ?)');
+      $stmt->execute([$id, $lang]);
     }
   }
   catch(PDOException $e){
