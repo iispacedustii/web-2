@@ -1,18 +1,13 @@
 <?php
-// Отправляем браузеру правильную кодировку,
-// файл index.php должен быть в кодировке UTF-8 без BOM.
+
 header('Content-Type: text/html; charset=UTF-8');
 
-// В суперглобальном массиве $_SERVER PHP сохраняет некторые заголовки запроса HTTP
-// и другие сведения о клиненте и сервере, например метод текущего запроса $_SERVER['REQUEST_METHOD'].
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-  // В суперглобальном массиве $_GET PHP хранит все параметры, переданные в текущем запросе через URL.
   if (!empty($_GET['save'])) {
-    // Если есть параметр save, то выводим сообщение пользователю.
-    print('Спасибо, результаты сохранены.');
+    print('Результаты сохранены.');
   }
   // Включаем содержимое файла form.php.
-  include('form.php');
+  include('form.html');
   // Завершаем работу скрипта.
   exit();
 }
@@ -22,42 +17,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 $errors = FALSE;
 
 
-if (empty($_POST['name']) || !preg_match('/^[a-zA-Z\s]{1,150}$/', $_POST['name_field'])) {
-  print('ФИО не указано!<br/>');
+if ( empty($_POST['name']) ) {
+  print('ФИО не указаны!<br/>');
   $errors = TRUE;
 }
 
-if (empty($_POST['phone']) || !is_numeric($_POST['tel_field']) || !preg_match('/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $_POST['tel_field'])) {
+if ( empty($_POST['phone']) ) {
   print('Номер телефона не указан!<br/>');
   $errors = TRUE;
 }
 
-if (empty($_POST['email']) || !preg_match('/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i', $_POST['email_field']) ) {
+if ( empty($_POST['email']) ) {
   print('Почта не указана!<br/>');
   $errors = TRUE;
 }
 
-if (empty($_POST['date']) || !preg_match('/^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/', $_POST['date_field']) ) {
+if ( empty($_POST['date']) ) {
   print('Дата рождения не указана!<br/>');
   $errors = TRUE;
 }
-if (!isset($_POST['sex']) || !in_array($_POST['sex'], array('male', 'female'))) {
+if ( !isset($_POST['sex']) ) {
   print('Пол не указан!<br/>');
   $errors = TRUE;
 }
 
-$langs = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11");
-if (!isset($_POST['langs'])) {
+if ( !isset($_POST['langs']) ) {
   print('Языки программирования не выбраны!<br/>');
   $errors = TRUE;
 }
 
-if (empty($_POST['biog']) ) {
+if (empty($_POST['bio']) ) {
   print('Заполните биографию.<br/>');
   $errors = TRUE;
 }
 
-if(!isset($_POST['check1']) || $_POST['check1'] != 'on') {
+if(!isset($_POST['checkmark']) || $_POST['checkmark'] != 'on') {
   print('Отметьте чекбокс.<br/>');
   $errors = TRUE;
 }
@@ -69,49 +63,24 @@ if ($errors) {
 
 // Сохранение в базу данных.
 
-$user = 'u67354'; // Заменить на ваш логин uXXXXX
-$pass = '3075308'; // Заменить на пароль, такой же, как от SSH
-$db = new PDO('mysql:host=localhost;dbname=u67354', $user, $pass,
-  [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); // Заменить test на имя БД, совпадает с логином uXXXXX
-
+$user = 'u67354';
+$pass = '3075308';
+$db = new PDO('mysql:host=localhost;dbname=u67354', $user, $pass, [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); 
 // Подготовленный запрос. Не именованные метки.
 try {
-  $stmt = $db->prepare("INSERT INTO form VALUES (name, phone, email, date, sex, bio, checkmark)");
-  $stmt->execute([  $_POST['name'], $_POST['phone'], $_POST['email'], $_POST['date'], $_POST['sex'], $_POST['bio'], $_POST['checkmark'] ]);
-  $form_id = $db->lastInsertId();
+    $stmt = $db->prepare("INSERT INTO form SET name = ?, phone = ?, email = ?, date = ?, sex = ?, bio = ?");
+    $stmt -> execute(array( $_POST['name'], $_POST['phone'], $_POST['email'], $_POST['date'], $_POST['sex'], $_POST['bio'] ));
   
-  foreach ($_POST['langs']) {
-    $stmt = $db->prepare("INSERT INTO lang_table VALUES (langs)");
-    $stmt->execute([ $_POST['langs'] ]);
-    $lang_list_id = $db->lastInsertId();
-  }
+    $application_id = $db->lastInsertId();
     
-    //$stmt = $db->prepare("INSERT INTO link VALUES (form_id, pl_id)");
-    //$stmt->execute([$form_id, $lang_list_id]); 
-}
-catch(PDOException $e){
-  print('Error : ' . $e->getMessage());
-  exit();
-}
-
-//  stmt - это "дескриптор состояния".
- 
-//  Именованные метки.
-//$stmt = $db->prepare("INSERT INTO test (label,color) VALUES (:label,:color)");
-//$stmt -> execute(['label'=>'perfect', 'color'=>'green']);
- 
-//Еще вариант
-/*$stmt = $db->prepare("INSERT INTO users (firstname, lastname, email) VALUES (:firstname, :lastname, :email)");
-$stmt->bindParam(':firstname', $firstname);
-$stmt->bindParam(':lastname', $lastname);
-$stmt->bindParam(':email', $email);
-$firstname = "John";
-$lastname = "Smith";
-$email = "john@test.com";
-$stmt->execute();
-*/
-
-// Делаем перенаправление.
-// Если запись не сохраняется, но ошибок не видно, то можно закомментировать эту строку чтобы увидеть ошибку.
-// Если ошибок при этом не видно, то необходимо настроить параметр display_errors для PHP.
-header('Location: ?save=1');
+    foreach ($_POST['langs'] as $language) {
+      $stmt = $db->prepare("INSERT INTO lang_table (id, language) VALUES (?, ?)");
+      $stmt->execute([$id, $language]);
+    }
+  }
+  catch(PDOException $e){
+    print('Ошибка: ' . $e->getMessage());
+    exit();
+  }
+  
+  header('Location: ?save=1');
