@@ -10,7 +10,90 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   include('form.html');
   exit();
 }
+//////////////////////////////////////
+// =========== POST ===========
+else {
+  // ERRORS
+  $errors = FALSE;
 
+  // name
+  if (empty($_POST['name'])) {
+    setcookie('name_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  }
+  else if (!preg_match('/^([А-Я]{1}[а-яё]{1,23}|[A-Z]{1}[a-z]{1,23})$/u', $_POST["name"])) {
+      setcookie('name_error', '2', time() + 24 * 60 * 60);
+      $errors = TRUE;
+  }
+  else {
+    setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);
+  }
+
+  // phone
+  if (empty($_POST['phone'])) {
+    setcookie('phone_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  }
+  else {
+    setcookie('phone_value', $_POST['phone'], time() + 30 * 24 * 60 * 60);
+  }
+
+  // email
+  if (empty($_POST['email'])) {
+    setcookie('email_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  }
+  else {
+    setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
+  }
+
+  // langs
+  $langs = array();
+
+  foreach ($_POST['langs'] as $key => $value) {
+      $langs[$key] = $value;
+  }
+
+  if (!sizeof($langs)) {
+    setcookie('langs_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  }
+  else {
+    setcookie('langs_value', json_encode($langs), time() + 30 * 24 * 60 * 60);
+  }
+
+  // bio
+  if (empty($_POST['bio'])) {
+    setcookie('bio_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  }
+  else {
+    setcookie('bio_value', $_POST['bio'], time() + 30 * 24 * 60 * 60);
+  }
+
+  // checkbox
+  if (empty($_POST['check'])) {
+    setcookie('check_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  }
+
+  // other
+  setcookie('year_value', $_POST['year'], time() + 30 * 24 * 60 * 60);
+  setcookie('gender_value', $_POST['gender'], time() + 30 * 24 * 60 * 60);
+
+  if ($errors) {
+    header('Location: index.php');
+    exit();
+  }
+  else {
+    setcookie('name_error', '', 100000);
+    setcookie('phone_error', '', 100000);
+    setcookie('email_error', '', 100000);
+    setcookie('langs_error', '', 100000);
+    setcookie('bio_error', '', 100000);
+    setcookie('check_error', '', 100000);
+  }
+/////////////////////////////
 // Проверяем ошибки.
 $errors = FALSE;
 
