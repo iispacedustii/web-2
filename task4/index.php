@@ -4,11 +4,48 @@
 header('Content-Type: text/html; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-  if (!empty($_GET['save'])) {
-    print('Результаты сохранены.');
+  $messages = array();
+
+  if (!empty($_COOKIE['save'])) {
+    setcookie('save', '', 100000);
+    $messages[] = 'Результаты сохранены.';
   }
 
-  include('form.html');
+  $errors = array();
+  $errors['name'] = !empty($_COOKIE['name_error']);
+  $errors['phone'] = !empty($_COOKIE['phone_error']);
+  $errors['email'] = !empty($_COOKIE['email_error']);
+  $errors['date'] = !empty($_COOKIE['date_error']);
+  $errors['sex'] = !empty($_COOKIE['sex_error']);
+  $errors['langs'] = !empty($_COOKIE['langs_error']);
+  $errors['bio'] = !empty($_COOKIE['bio_error']);
+  $errors['checkmark'] = !empty($_COOKIE['checkmark_error']);
+
+  // Выдаем сообщения об ошибках.
+  if ($errors['name']) {
+    setcookie('name_error', '', 100000);
+    $messages[] = '<div class="error">ФИО не указаны!</div>';
+  }
+  if ($errors['phone']) {
+    setcookie('phone_error', '', 100000);
+    $messages[] = '<div class="error">Номер телефона не указан!</div>';
+  }
+  if ($errors['email']) {
+    setcookie('email_error', '', 100000);
+    $messages[] = '<div class="error">Почта не указана!</div>';
+  }
+  // TODO: тут выдать сообщения об ошибках в других полях.
+
+  // Складываем предыдущие значения полей в массив, если есть.
+  $values = array();
+  $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
+  // TODO: аналогично все поля.
+
+  // Включаем содержимое файла form.php.
+  // В нем будут доступны переменные $messages, $errors и $values для вывода 
+  // сообщений, полей с ранее заполненными данными и признаками ошибок.
+  include('form.php');
+
   exit();
 }
 else {
