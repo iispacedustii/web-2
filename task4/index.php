@@ -55,6 +55,17 @@ else {
     print('ФИО не указаны!<br/>');
     $errors = TRUE;
   }
+  if (empty($_POST['name'])) {
+    setcookie('name_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  }
+  else if (!preg_match('/([А-Яа-я-]+\s[А-Яа-я-]+\s[А-Яа-я-]+)/', $_POST['name'])) {
+    setcookie('name_error', '2', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  }
+  else {
+    setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);
+  }
   
   if ( empty($_POST['phone']) || !is_numeric($_POST['phone'])) {
     print('Номер телефона не указан!<br/>');
