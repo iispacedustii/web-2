@@ -22,16 +22,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $errors['checkmark'] = !empty($_COOKIE['checkmark_error']);
 
   // Выдаем сообщения об ошибках.
-  if ($errors['name']) {
+  if ($errors['name'] == '1') {
     setcookie('name_error', '', 100000);
     $messages[] = '<div class="error">ФИО не указаны!</div>';
   }
+  else if ($errors['name'] == '2') {
+    setcookie('name_error', '', 100000);
+    $messages[] = '<div class="error">Недопустимые символы!</div>';
+  }
+  
   if ($errors['phone']) {
     setcookie('phone_error', '', 100000);
     $messages[] = '<div class="error">Номер телефона не указан!</div>';
   }
+  
   if ($errors['email']) {
     setcookie('email_error', '', 100000);
+    $messages[] = '<div class="error">Почта не указана!</div>';
+  }
+
+  if ($errors['date']) {
+    setcookie('date_error', '', 100000);
+    $messages[] = '<div class="error">Почта не указана!</div>';
+  }
+  if ($errors['sex']) {
+    setcookie('sex_error', '', 100000);
+    $messages[] = '<div class="error">Почта не указана!</div>';
+  }
+  if ($errors['langs']) {
+    setcookie('langs_error', '', 100000);
+    $messages[] = '<div class="error">Почта не указана!</div>';
+  }
+  if ($errors['bio']) {
+    setcookie('bio_error', '', 100000);
+    $messages[] = '<div class="error">Почта не указана!</div>';
+  }
+  if ($errors['checkmark']) {
+    setcookie('checkmark_error', '', 100000);
     $messages[] = '<div class="error">Почта не указана!</div>';
   }
   // TODO: тут выдать сообщения об ошибках в других полях.
@@ -50,11 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 else {
   $errors = FALSE;
-  
-  if ( empty($_POST['name']) || !preg_match('/([A-Za-zА-Яа-я-]+\s[A-Za-zА-Яа-я-]+\s[A-Za-zА-Яа-я-]+)/', $_POST['name'])) {
-    print('ФИО не указаны!<br/>');
-    $errors = TRUE;
-  }
+
   if (empty($_POST['name'])) {
     setcookie('name_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
