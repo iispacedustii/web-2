@@ -155,7 +155,7 @@ else {
     $errors = TRUE;
   }
   else {
-    setcookie('checkbox_value', $_POST['checkbox'], time() + 30 * 24 * 60 * 60);
+    setcookie('checkmark_value', $_POST['checkmark'], time() + 30 * 24 * 60 * 60);
   }
   
   if ($errors) {
