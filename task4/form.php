@@ -4,10 +4,21 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link rel='stylesheet' href='style.css'>
-    <title>Задание 3</title>
+    <title>Задание 4</title>
   </head>
   
   <body>
+
+    <?php
+      if (!empty($messages)) {
+        print('<div id="messages" class="alert alert-primary">');
+        foreach ($messages as $message) {
+          print($message);
+        }
+        print('</div>');
+      }
+    ?>
+    
     <h3>ФОРМА</h3>
     <form action='index.php' method='POST' class='form'>
       <div>
