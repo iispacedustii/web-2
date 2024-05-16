@@ -24,42 +24,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   // Выдаем сообщения об ошибках.
   if ($errors['name'] == '1') {
     setcookie('name_error', '', 100000);
-    $messages[] = '<div class="error">ФИО не указаны!</div>';
+    $messages[] = '<div class="error">ФИО не указаны.</div>';
   }
   else if ($errors['name'] == '2') {
     setcookie('name_error', '', 100000);
     $messages[] = '<div class="error">Недопустимые символы!</div>';
   }
   
-  if ($errors['phone']) {
+  if ($errors['phone'] == '1') {
     setcookie('phone_error', '', 100000);
-    $messages[] = '<div class="error">Номер телефона не указан!</div>';
+    $messages[] = '<div class="error">Номер телефона не указан.</div>';
+  }
+  else if ($errors['phone'] == '2') {
+    setcookie('phone_error', '', 100000);
+    $messages[] = '<div class="error">Недопустимые символы!</div>';
   }
   
   if ($errors['email']) {
     setcookie('email_error', '', 100000);
-    $messages[] = '<div class="error">Почта не указана!</div>';
+    $messages[] = '<div class="error">Почта не указана.</div>';
   }
 
   if ($errors['date']) {
     setcookie('date_error', '', 100000);
-    $messages[] = '<div class="error">Почта не указана!</div>';
+    $messages[] = '<div class="error">Дата рождения не указана.</div>';
   }
+  
   if ($errors['sex']) {
     setcookie('sex_error', '', 100000);
-    $messages[] = '<div class="error">Почта не указана!</div>';
+    $messages[] = '<div class="error">Пол не указан.</div>';
   }
+  
   if ($errors['langs']) {
     setcookie('langs_error', '', 100000);
-    $messages[] = '<div class="error">Почта не указана!</div>';
+    $messages[] = '<div class="error">Языки программирования не выбраны.</div>';
   }
+  
   if ($errors['bio']) {
     setcookie('bio_error', '', 100000);
-    $messages[] = '<div class="error">Почта не указана!</div>';
+    $messages[] = '<div class="error">Заполните биографию.</div>';
   }
+  
   if ($errors['checkmark']) {
     setcookie('checkmark_error', '', 100000);
-    $messages[] = '<div class="error">Почта не указана!</div>';
+    $messages[] = '<div class="error">Отметьте чекбокс.</div>';
   }
   // TODO: тут выдать сообщения об ошибках в других полях.
 
@@ -90,38 +98,64 @@ else {
     setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);
   }
   
-  if ( empty($_POST['phone']) || !is_numeric($_POST['phone'])) {
-    print('Номер телефона не указан!<br/>');
+  if ( empty($_POST['phone']) ) {
+    setcookie('phone_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
+  }
+  else if (!is_numeric($_POST['phone'])) {
+    setcookie('phone_error', '2', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  }
+  else {
+    setcookie('phone_value', $_POST['phone'], time() + 30 * 24 * 60 * 60);
   }
   
   if ( empty($_POST['email']) ) {
-    print('Почта не указана!<br/>');
+    setcookie('email_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
+  }
+  else {
+    setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
   }
   
   if ( empty($_POST['date']) ) {
-    print('Дата рождения не указана!<br/>');
+    setcookie('date_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
-  if ( !isset($_POST['sex']) || !in_array($_POST['sex'], array('male', 'female')) ) {
-    print('Пол не указан!<br/>');
+  else {
+    setcookie('date_value', $_POST['date'], time() + 30 * 24 * 60 * 60);
+  }
+  
+  if ( !isset($_POST['sex']) ) {
+    setcookie('sex_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
+  }
+  else {
+    setcookie('sex_value', $_POST['sex'], time() + 30 * 24 * 60 * 60);
   }
   
   if ( empty($_POST['langs']) ) {
-    print('Языки программирования не выбраны!<br/>');
+    setcookie('langs_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
+  }
+  else {
+    setcookie('langs_value', $_POST['langs'], time() + 30 * 24 * 60 * 60);
   }
   
   if (empty($_POST['bio']) ) {
     print('Заполните биографию.<br/>');
     $errors = TRUE;
   }
+  else {
+    setcookie('bio_value', $_POST['bio'], time() + 30 * 24 * 60 * 60);
+  }
   
   if(!isset($_POST['checkmark']) || $_POST['checkmark'] != 'on') {
     print('Отметьте чекбокс.<br/>');
     $errors = TRUE;
+  }
+  else {
+    setcookie('checkbox_value', $_POST['checkbox'], time() + 30 * 24 * 60 * 60);
   }
   
   if ($errors) {
