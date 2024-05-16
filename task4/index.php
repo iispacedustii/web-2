@@ -134,12 +134,16 @@ else {
     setcookie('sex_value', $_POST['sex'], time() + 30 * 24 * 60 * 60);
   }
   
-  if ( empty($_POST['langs']) ) {
+  $langs = array();
+  foreach ($_POST['langs'] as $key => $value) {
+      $langs[$key] = $value;
+  }
+  if (!sizeof($langs)) {
     setcookie('langs_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
   else {
-    setcookie('langs_value', $_POST['langs'], time() + 30 * 24 * 60 * 60);
+    setcookie('langs_value', json_encode($langs), time() + 30 * 24 * 60 * 60);
   }
   
   if (empty($_POST['bio']) ) {
@@ -151,15 +155,23 @@ else {
   }
   
   if(!isset($_POST['checkmark']) || $_POST['checkmark'] != 'on') {
-    print('Отметьте чекбокс.<br/>');
+    setcookie('check_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  }
-  else {
-    setcookie('checkmark_value', $_POST['checkmark'], time() + 30 * 24 * 60 * 60);
   }
   
   if ($errors) {
+    header('Location: index.php');
     exit();
+  }
+  else {
+    setcookie('name_error', '', 100000);
+    setcookie('phone_error', '', 100000);
+    setcookie('email_error', '', 100000);
+    setcookie('date_error', '', 100000);
+    setcookie('sex_error', '', 100000);
+    setcookie('langs_error', '', 100000);
+    setcookie('bio_error', '', 100000);
+    setcookie('check_error', '', 100000);
   }
 
   // Сохранение в базу данных.
@@ -180,9 +192,9 @@ else {
       }
     }
     catch(PDOException $e){
-      print('Ошибка: ' . $e->getMessage());
+      setcookie('save', 'Ошибка! Результаты не сохранены.');
       exit();
     }
     
-    header('Location: ?save=1');
+    header('Location: index.php');
 }
