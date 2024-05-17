@@ -1,11 +1,9 @@
-
 <?php
-
 header('Content-Type: text/html; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+  
   $messages = array();
-
   if (!empty($_COOKIE['save'])) {
     setcookie('save', '', 100000);
     $messages[] = 'Результаты сохранены.';
@@ -69,12 +67,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('checkmark_error', '', 100000);
     $messages[] = '<div class="error">Отметьте чекбокс.</div>';
   }
-  // TODO: тут выдать сообщения об ошибках в других полях.
 
   // Складываем предыдущие значения полей в массив, если есть.
   $values = array();
   $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
-  // TODO: аналогично все поля.
+  $values['phone'] = empty($_COOKIE['phone_value']) ? '' : $_COOKIE['phone_value'];
+  $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
+  $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
+  $values['sex'] = empty($_COOKIE['sex_value']) ? '' : $_COOKIE['sex_value'];
+  $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
+
+  if (!empty($_COOKIE['langs_value'])) {
+    $langs_value = json_decode($_COOKIE['langs_value']);
+  }
+  $values['langs'] = [];
+  if (isset($langs_value) && is_array($langs_value)) {
+      foreach ($langs_value as $lang) {
+          if (!empty($langs[$lang])) {
+              $values['langs'][$lang] = $lang;
+          }
+      }
+  }
 
   // Включаем содержимое файла form.php.
   // В нем будут доступны переменные $messages, $errors и $values для вывода 
