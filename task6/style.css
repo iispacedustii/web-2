@@ -8,6 +8,11 @@
     margin: 2px 10px;
   }
 
+  .row {
+    display: flex;
+    flex-direction: row;
+  }
+
   .align {
     display: flex;
     align-items: center;
@@ -87,8 +92,15 @@
 
   h1 {
     text-align: center;
-    padding-bottom: 10px;
-    border-bottom: 2px solid rgba(28, 110, 164, 0.5);
+    padding-bottom: 1px;
+    font-size: 20;
+  }
+  h3 {
+    text-align: center;
+    margin: 60px auto 15px;
+    padding-top: 40px;
+    padding-bottom: 1px;
+    
   }
 
   .msgbox {
@@ -107,4 +119,4 @@
     padding: 10px;
   }
 
-input, option, textarea { background-color: #e5ffc4; color: rgb(0, 0, 0); }
+input, option, textarea { background-color: #c9ebc2; color: rgb(0, 0, 0); }

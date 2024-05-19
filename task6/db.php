@@ -18,7 +18,7 @@
             <div class = "langStat">
                 
                 <?php
-                //<h3 class="langProg">Языки программирования:</h3>
+                
                 $stmt = $db->prepare("SELECT count(id) from lang_table where lang = 'Pascal';");
                 $stmt->execute();
                 $Pascal = $stmt->fetchColumn();
@@ -52,30 +52,6 @@
                 $stmt = $db->prepare("SELECT count(id) from lang_table where lang = 'Scala';");
                 $stmt->execute();
                 $Scala = $stmt->fetchColumn();
-
-                
-                // echo "Pascal: ";
-                // echo (empty ($Pascal) ? '0' : $Pascal) . "</br>";
-                // echo "C: ";
-                // echo (empty ($C) ? '0' : $C) . "</br>";
-                // echo "C++: ";
-                // echo (empty ($Cpp) ? '0' : $Cpp) . "</br>";
-                // echo "JavaScript: ";
-                // echo (empty ($JavaScript) ? '0' : $JavaScript) . "</br>";
-                // echo "PHP: ";
-                // echo (empty ($PHP) ? '0' : $PHP) . "</br>";
-                // echo "Python: ";
-                // echo (empty ($Python) ? '0' : $Python) . "</br>";
-                // echo "Java: ";
-                // echo (empty ($Java) ? '0' : $Java) . "</br>";
-                // echo "Haskel: ";
-                // echo (empty ($Haskel) ? '0' : $Haskel) . "</br>";
-                // echo "Clojure: ";
-                // echo (empty ($Clojure) ? '0' : $Clojure) . "</br>";
-                // echo "Prolog: ";
-                // echo (empty ($Prolog) ? '0' : $Prolog) . "</br>";
-                // echo "Scala: ";
-                // echo (empty ($Scala) ? '0' : $Scala) . "</br>";
 
                 echo '<div class="msgbox">';
                 if (!empty ($messages)) {
@@ -248,6 +224,48 @@
             }
             ?>
         </table>
+
+        <h3 class="langProg">Статистика языков программирования:</h3>
+        <table>
+            <?php
+                echo "<tr> <td> Pascal </td><td> C </td><td> C++ </td><td> JavaScript </td><td> PHP </td><td> Python </td><td> Java </td><td> Haskel </td><td> Clojure </td><td> Prolog </td><td> Scala </td> </tr>";
+                echo "<tr>";
+                echo "<td>" . (empty ($Pascal) ? '0' : $Pascal) . "</td> ";
+                echo "<td>" . (empty ($C) ? '0' : $C) . "</td> ";
+                echo "<td>" . (empty ($Cpp) ? '0' : $Cpp) . "</td> ";
+                echo "<td>" . (empty ($JavaScript) ? '0' : $JavaScript) . "</td> ";
+                echo "<td>" . (empty ($PHP) ? '0' : $PHP) . "</td> ";
+                echo "<td>" . (empty ($Python) ? '0' : $Python) . "</td> ";
+                echo "<td>" . (empty ($Java) ? '0' : $Java) . "</td> ";
+                echo "<td>" . (empty ($Haskel) ? '0' : $Haskel) . "</td> ";
+                echo "<td>" . (empty ($Clojure) ? '0' : $Clojure) . "</td> ";
+                echo "<td>" . (empty ($Prolog) ? '0' : $Prolog) . "</td> ";
+                echo "<td>" . (empty ($Scala) ? '0' : $Scala) . "</td> ";
+                echo "</tr>";
+                
+                // echo "Pascal: ";
+                // echo (empty ($Pascal) ? '0' : $Pascal) . "</br>";
+                // echo "C: ";
+                // echo (empty ($C) ? '0' : $C) . "</br>";
+                // echo "C++: ";
+                // echo (empty ($Cpp) ? '0' : $Cpp) . "</br>";
+                // echo "JavaScript: ";
+                // echo (empty ($JavaScript) ? '0' : $JavaScript) . "</br>";
+                // echo "PHP: ";
+                // echo (empty ($PHP) ? '0' : $PHP) . "</br>";
+                // echo "Python: ";
+                // echo (empty ($Python) ? '0' : $Python) . "</br>";
+                // echo "Java: ";
+                // echo (empty ($Java) ? '0' : $Java) . "</br>";
+                // echo "Haskel: ";
+                // echo (empty ($Haskel) ? '0' : $Haskel) . "</br>";
+                // echo "Clojure: ";
+                // echo (empty ($Clojure) ? '0' : $Clojure) . "</br>";
+                // echo "Prolog: ";
+                // echo (empty ($Prolog) ? '0' : $Prolog) . "</br>";
+                // echo "Scala: ";
+                // echo (empty ($Scala) ? '0' : $Scala) . "</br>";
+            ?>
         <input type="hidden" name="token" value="<?= $_SESSION['token']; ?>" />
     </form>
 </body>
